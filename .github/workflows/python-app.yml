@@ -40,6 +40,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Scan for Secrets
-        uses: google/secrets-store-csi-driver@v1
+        uses: trufflesecurity/trufflehog-action@v1
         with:
-          args: "scan . --no-store"
+          args: '.'
