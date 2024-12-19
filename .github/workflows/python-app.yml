@@ -30,7 +30,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Check Python Dependencies
-        uses: pyupio/safety@v1
+        uses: dependabot/action@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
