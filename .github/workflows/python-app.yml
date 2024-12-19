@@ -16,29 +16,29 @@ jobs:
     name: SAST Scan
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: Run SAST
-      uses: github/codeql-action/init@v2
-      with:
-        languages: python
-    - uses: github/codeql-action/analyze@v2
+      - uses: actions/checkout@v3
+      - name: Run SAST
+        uses: github/codeql-action/init@v2
+        with:
+          languages: python
+      - uses: github/codeql-action/analyze@v2
 
   dependency_check:
     name: Dependency Vulnerability Check
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: Check Python Dependencies
-      uses: pyupio/safety@v1
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/checkout@v3
+      - name: Check Python Dependencies
+        uses: pyupio/safety@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
   secrets_check:
     name: Secrets Check
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: Scan for Secrets
-      uses: google/secrets-store-csi-driver@v1
-      with:
-        args: "scan . --no-store"
+      - uses: actions/checkout@v3
+      - name: Scan for Secrets
+        uses: google/secrets-store-csi-driver@v1
+        with:
+          args: "scan . --no-store"
