@@ -44,7 +44,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Install trufflehog
-        run: |
-          pip install trufflehog
+        run: pip install trufflehog
       - name: Scan for Secrets
-        run: trufflehog filesystem .
+        run: trufflehog filesystem --path . --json
