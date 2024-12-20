@@ -26,7 +26,7 @@ jobs:
           echo "sast scan issue found"
           exit 1
           )
-          continue-on-error: true
+        continue-on-error: true
 
       - name: Dependency Vulnerability Check
         run: |
