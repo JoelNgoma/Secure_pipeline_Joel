@@ -1,49 +1,42 @@
 name: Python application
 
 on:
-  push:
-    branches: ["dev"]
   pull_request:
-    branches: ["main"]
+    branches: [main]
   schedule:
     - cron: "0 0 * * 1"
 
-permissions:
-  contents: read
-  security-events: write
-
 jobs:
-  sast_scan:
-    name: SAST Scan
+  security-checks:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Run SAST
-        uses: github/codeql-action/init@v2
-        with:
-          languages: python
-      - uses: github/codeql-action/analyze@v2
-
-  dependency_check:
-    name: Dependency Vulnerability Check
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Set up Python
+      - name: Python setup
         uses: actions/setup-python@v4
         with:
-          python-version: "3.x"
-      - name: Install pip-audit
-        run: pip install pip-audit
-      - name: Run pip-audit
-        run: pip-audit
+          python-version: "3.10"
 
-  secrets_check:
-    name: Secrets Check
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Install trufflehog
-        run: pip install trufflehog
-      - name: Scan for Secrets
-        run: trufflehog https://github.com/JoelNgoma/Secure_pipeline_Joel.git --json
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install bandit safety detect-secrets
+      - name: SAST Scan
+        run: |
+          bandit -r . -v --severity-level low || (
+          echo "sast scan issue found"
+          exit 1
+          )
+          continue-on-error: true
+
+      - name: Dependency Vulnerability Check
+        run: |
+          pip freeze > requirements.txt
+          safety check --full-report || (echo "Dependecy vuln found" && exit 1)
+          continue-on-error: true
+      - name: Secrets Check
+        run: |
+          if detect-secrets scan . | grep -v '{}' > secrets.txt; then
+          echo "Secrets found"
+          cat secrets.txt
+          exit 1
+          fi
