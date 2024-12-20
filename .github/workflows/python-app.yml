@@ -2,11 +2,11 @@ name: Python application
 
 on:
   push:
-    branches: [ "dev" ]
+    branches: ["dev"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
   schedule:
-    - cron: '0 0 * * 1'
+    - cron: "0 0 * * 1"
 
 permissions:
   contents: read
@@ -32,7 +32,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.x'
+          python-version: "3.x"
       - name: Install pip-audit
         run: pip install pip-audit
       - name: Run pip-audit
@@ -46,4 +46,4 @@ jobs:
       - name: Install trufflehog
         run: pip install trufflehog
       - name: Scan for Secrets
-        run: trufflehog filesystem --path . --json
+        run: trufflehog https://github.com/JoelNgoma/Secure_pipeline_Joel.git --json
