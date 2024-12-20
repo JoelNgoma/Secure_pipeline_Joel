@@ -43,7 +43,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - name: Install trufflehog
+        run: |
+          pip install trufflehog
       - name: Scan for Secrets
-        uses: trufflesecurity/trufflehog-action@v1
-        with:
-          args: '.'
+        run: trufflehog filesystem .
