@@ -28,11 +28,6 @@ jobs:
           )
           continue-on-error: true
 
-      - name: Dependency Vulnerability Check
-        run: |
-          pip freeze > requirements.txt
-          safety check --full-report || (echo "Dependecy vuln found" && exit 1)
-          continue-on-error: true
       - name: Secrets Check
         run: |
           if detect-secrets scan . | grep -v '{}' > secrets.txt; then
@@ -40,3 +35,10 @@ jobs:
           cat secrets.txt
           exit 1
           fi
+
+      - name: Dependency Vulnerability Check
+        run: |
+          pip freeze > requirements.txt
+          safety check --full-report || (echo "Dependecy vuln found" && exit 1)
+        continue-on-error: true
+
