@@ -1,2 +1,2 @@
 print("Hello world")
-eval("os.system('rm -rf /')")
+password = "testSecurity018"
