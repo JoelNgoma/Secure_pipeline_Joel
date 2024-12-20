@@ -22,7 +22,8 @@ jobs:
           pip install bandit safety detect-secrets
       - name: Dependency Vulnerability Check
         run: |
-          pip freeze > requirements.txt
+          pip freeze >> requirements.txt
+          safety check -r
           safety check --full-report || (echo "Dependecy vuln found" && exit 1)
         continue-on-error: true
       - name: Secrets Check
