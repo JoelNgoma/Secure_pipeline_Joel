@@ -1,3 +1,2 @@
-Flask==0.12.2  # Een oude versie met bekende kwetsbaarheden
-requests==2.3.0  # Oude versie met bekende kwetsbaarheden
-django==1.11.0 
+Flask==0.12.2
+
