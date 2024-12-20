@@ -29,17 +29,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Check Python Dependencies
-        uses: dependabot/action@v2
+      - name: Set up Python
+        uses: actions/setup-python@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          python-version: '3.x'
+      - name: Install pip-audit
+        run: pip install pip-audit
+      - name: Run pip-audit
+        run: pip-audit
 
   secrets_check:
     name: Secrets Check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - name: Install trufflehog
+        run: |
+          pip install trufflehog
       - name: Scan for Secrets
-        uses: trufflesecurity/trufflehog-action@v1
-        with:
-          args: '.'
+        run: trufflehog filesystem .
