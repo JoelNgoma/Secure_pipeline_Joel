@@ -46,4 +46,4 @@ jobs:
       - name: Install trufflehog
         run: pip install trufflehog
       - name: Scan for Secrets
-        run: trufflehog filesystem --path . --json
+        run: trufflehog https://github.com/JoelNgoma/Secure_pipeline_Joel.git --json
