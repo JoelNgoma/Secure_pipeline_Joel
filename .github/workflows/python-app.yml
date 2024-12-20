@@ -20,7 +20,11 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install bandit safety detect-secrets
-
+      - name: Dependency Vulnerability Check
+        run: |
+          pip freeze > requirements.txt
+          safety check --full-report || (echo "Dependecy vuln found" && exit 1)
+        continue-on-error: true
       - name: Secrets Check
         run: |
           if detect-secrets scan . | grep -v '{}' > secrets.txt; then
@@ -29,11 +33,6 @@ jobs:
           exit 1
           fi
 
-      - name: Dependency Vulnerability Check
-        run: |
-          pip freeze > requirements.txt
-          safety check --full-report || (echo "Dependecy vuln found" && exit 1)
-        continue-on-error: true
       - name: SAST Scan
         run: |
           bandit -r . -v --severity-level low || (
